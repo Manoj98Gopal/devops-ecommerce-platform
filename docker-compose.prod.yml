@@ -1,0 +1,51 @@
+services:
+  ecommerce-postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: ecommerce
+      POSTGRES_PASSWORD: ecommerce123
+    healthcheck:
+      test: ["CMD","pg_isready"]
+    volumes:
+      - ecommerce-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+
+  ecommerce-redis:
+    image: redis:7
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    restart: unless-stopped
+
+
+  ecommerce-backend:
+    image: manoj98gopal/ecommerce-backend:1.0.0
+    depends_on:
+      ecommerce-postgres:
+        condition : service_healthy
+      ecommerce-redis:
+        condition : service_healthy
+    env_file:
+      - ./backend/.env
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  ecommerce-frontend:
+    image: manoj98gopal/ecommerce-frontend:1.0.0
+    depends_on:
+      ecommerce-backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+
+volumes:
+  ecommerce-postgres-data:
+    external: true

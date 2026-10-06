@@ -12,10 +12,11 @@ Install and start PostgreSQL and Redis using your OS package manager or vendor i
 
 ## Setup
 
-Run from the repository root:
+Frontend and backend are independent npm projects. Each has its own `package.json`, `package-lock.json`, and local `node_modules/`. Run from the repository root:
 
 ```bash
-npm ci
+npm --prefix backend ci
+npm --prefix frontend ci
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
@@ -48,8 +49,8 @@ Edit `backend/.env`:
 Example secrets are placeholders and must be replaced. Git ignores `.env` files. Frontend `VITE_` variables are public: never put secrets in them.
 
 ```bash
-npm run db:migrate
-npm run db:seed
+npm --prefix backend run db:migrate
+npm --prefix backend run db:seed
 ```
 
 Migrations are transactional and recorded in `schema_migrations`. The seed adds three products, a bcrypt-hashed demo user, and a delivered sample order. Repeating seed does not duplicate products or orders; it updates the configured user's password. Changing the seed email creates another user and sample order.
@@ -59,13 +60,13 @@ Migrations are transactional and recorded in `schema_migrations`. The seed adds 
 In one terminal:
 
 ```bash
-npm run dev:backend
+npm --prefix backend run dev
 ```
 
 In a second terminal:
 
 ```bash
-npm run dev:frontend
+npm --prefix frontend run dev
 ```
 
 Open **http://localhost:5173**. Browse Products and sign in with your configured seed credentials to view Orders. Login is held in memory, so refreshing signs you out. Tokens expire after one hour.
@@ -73,8 +74,8 @@ Open **http://localhost:5173**. Browse Products and sign in with your configured
 ## Verify and build
 
 ```bash
-npm test
-npm run build
+npm --prefix backend test
+npm --prefix frontend run build
 curl -i http://localhost:3000/api/health
 curl -i http://localhost:3000/api/products
 curl -i http://localhost:3000/api/products
@@ -82,10 +83,10 @@ curl -i http://localhost:3000/api/products
 
 Tests exercise API behavior with isolated database/cache doubles; no external services are required. The curl checks validate your live connections after migrations and seeding. Products show `X-Cache: MISS` followed by `HIT` while Redis is available; an existing cache may make both hits.
 
-Start the backend without watching using `npm start --workspace backend`. Frontend build output is `frontend/dist`. To check that build locally:
+Start the backend without watching using `npm --prefix backend start`. Frontend build output is `frontend/dist`. To check that build locally:
 
 ```bash
-npm run preview --workspace frontend
+npm --prefix frontend run preview
 ```
 
 Preview defaults to port 4173. Set `FRONTEND_ORIGIN=http://localhost:4173` in the backend environment and restart the API. Preview is a local build check, not a production web server. The API URL is embedded at frontend build time.

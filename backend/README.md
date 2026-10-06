@@ -1,16 +1,19 @@
 # Express API
 
-Follow the [root guide](../README.md) to configure PostgreSQL, Redis, and `backend/.env`. Install dependencies at the root with `npm ci`.
+Follow the [root guide](../README.md) to configure PostgreSQL, Redis, and `backend/.env`. Install dependencies in this directory with `npm ci`.
 
 From this directory:
 
 ```bash
+npm ci
 npm run db:migrate
 npm run db:seed
 npm run dev
 npm test
 npm start
 ```
+
+The backend runs JavaScript directly; no compilation or `dist/` directory is required.
 
 `dev` watches files; `start` runs without watching. Environment loading always resolves `backend/.env`. Restart after environment changes.
 

@@ -7,6 +7,7 @@ Follow the [root guide](../README.md). Copy [.env.example](.env.example) to `.en
 From this directory:
 
 ```bash
+npm ci
 npm run dev
 npm run build
 npm run preview

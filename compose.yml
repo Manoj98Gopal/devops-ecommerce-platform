@@ -1,0 +1,54 @@
+services:
+  ecommerce-postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: ecommerce
+      POSTGRES_PASSWORD: ecommerce123
+    healthcheck:
+      test: ["CMD","pg_isready"]
+    volumes:
+      - ecommerce-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+
+  ecommerce-redis:
+    image: redis:7
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    restart: unless-stopped
+
+
+  ecommerce-backend:
+    image: manoj98gopal/ecommerce-backend:1.0.0
+    depends_on:
+      ecommerce-postgres:
+        condition : service_healthy
+      ecommerce-redis:
+        condition : service_healthy
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  ecommerce-frontend:
+    image: manoj98gopal/ecommerce-frontend:1.0.0
+    depends_on:
+      - ecommerce-backend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:3000
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+
+volumes:
+  ecommerce-postgres-data:
+    external: true
