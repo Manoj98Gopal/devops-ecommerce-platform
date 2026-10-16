@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   ecommerce-frontend:
-    image: manoj98gopal/ecommerce-frontend:1.2.0
+    image: manoj98gopal/ecommerce-frontend:1.2.1
     depends_on:
       ecommerce-backend:
         condition: service_healthy
