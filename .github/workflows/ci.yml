@@ -54,3 +54,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push backend Docker image
+        run: docker push manoj98gopal/ecommerce-backend:$VERSION
+
+      - name: Push frontend Docker image
+        run: docker push manoj98gopal/ecommerce-frontend:$VERSION
+
+        
