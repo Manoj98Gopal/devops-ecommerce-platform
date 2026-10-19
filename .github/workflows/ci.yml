@@ -45,3 +45,9 @@ jobs:
 
       - name: Build frontend Docker image
         run: docker build -t ecommerce-frontend:ci ./frontend
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
