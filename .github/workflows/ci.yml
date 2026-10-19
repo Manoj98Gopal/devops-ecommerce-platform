@@ -42,3 +42,6 @@ jobs:
 
       - name: Build backend Docker image
         run: docker build -t ecommerce-backend:ci ./backend
+
+      - name: Build frontend Docker image
+        run: docker build -t ecommerce-frontend:ci ./frontend
