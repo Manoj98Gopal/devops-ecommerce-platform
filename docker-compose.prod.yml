@@ -9,8 +9,6 @@ services:
       test: ["CMD","pg_isready"]
     volumes:
       - ecommerce-postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     restart: unless-stopped
 
 
