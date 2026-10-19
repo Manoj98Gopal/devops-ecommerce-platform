@@ -37,5 +37,8 @@ jobs:
         working-directory: frontend
 
       - name: Build frontend
-        run: npm run build    
+        run: npm run build
         working-directory: frontend
+
+      - name: Build backend Docker image
+        run: docker build -t ecommerce-backend:ci ./backend
