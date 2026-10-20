@@ -174,7 +174,7 @@ function App() {
             setPage("products");
           }}
         >
-          Everyday Store
+          Gopal Son's Store
         </a>
         <nav aria-label="Main navigation">
           {["products", "orders", "login"]
