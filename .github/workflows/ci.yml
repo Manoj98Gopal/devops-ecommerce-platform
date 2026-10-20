@@ -69,6 +69,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/devops-ecommerce-platform
-            git pull origin main
+            sudo git pull origin main
             sudo VERSION=${{ env.VERSION }} docker compose -f docker-compose.prod.yml pull
             sudo VERSION=${{ env.VERSION }} docker compose -f docker-compose.prod.yml up -d
