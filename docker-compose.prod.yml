@@ -20,7 +20,7 @@ services:
 
 
   ecommerce-backend:
-    image: manoj98gopal/ecommerce-backend:1.1.0
+    image: manoj98gopal/ecommerce-backend:${VERSION}
     depends_on:
       ecommerce-postgres:
         condition : service_healthy
@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
 
   ecommerce-frontend:
-    image: manoj98gopal/ecommerce-frontend:1.2.1
+    image: manoj98gopal/ecommerce-frontend:${VERSION}
     depends_on:
       ecommerce-backend:
         condition: service_healthy
